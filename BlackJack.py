@@ -18,6 +18,3 @@ while count < 52:
     deck.append(random_num)
     numbers_used.append(random_num)
     count +=1 
-
-print(deck)
-print(len(deck))
