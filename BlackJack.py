@@ -37,3 +37,17 @@ while running:
     pygame.display.flip() 
 
 pygame.quit()
+
+
+#lesson 2
+deck = []
+
+for i in range(52):
+  deck.append(i)
+
+for i in range(52):
+  swap = random.randint(i+1, 51)
+  
+
+print(deck)
+print(len(deck))
