@@ -10,6 +10,11 @@ screen = pygame.display.set_mode((width, height))
 deck = []
 
 numbers_used = []
+def swap(x,y):
+   temp = x
+   x=y
+   y=temp
+   return x,y
 
 def check_used(num):
   for i in range(len(numbers_used)):
@@ -46,8 +51,10 @@ for i in range(52):
   deck.append(i)
 
 for i in range(52):
-  swap = random.randint(i+1, 51)
-  
+  swap_index = random.randint(i+1, 51)
+  temp = deck[swap_index]
+  deck[swap_index] = deck[i]
+  deck[i] = temp
 
 print(deck)
 print(len(deck))
