@@ -1,60 +1,96 @@
-import pygame
+
 import random
 import warnings
-warnings.filterwarnings("ignore", category=UserWarning, message="pkg_resources is deprecated")
-
-pygame.init()
-width, height = 800, 600 
-screen = pygame.display.set_mode((width, height))
-
-deck = []
-
-numbers_used = []
-def swap(x,y):
-   temp = x
-   x=y
-   y=temp
-   return x,y
-
-def check_used(num):
-  for i in range(len(numbers_used)):
-    if numbers_used[i] == num:
-      return True
-
-  return False
-
-count = 0
-while count < 52:
-  random_num = random.randint(0,51)
-  if check_used(random_num) == False:
-    deck.append(random_num)
-    numbers_used.append(random_num)
-    count +=1 
-
-running = True
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    screen.fill((0, 0, 0))
-
-    pygame.display.flip() 
-
-pygame.quit()
 
 
 #lesson 2
-deck = []
 
-for i in range(52):
-  deck.append(i)
 
-for i in range(52):
-  swap_index = random.randint(i+1, 51)
-  temp = deck[swap_index]
-  deck[swap_index] = deck[i]
-  deck[i] = temp
+player_hand = []
+dealer_hand = []
+suits = ["heart","spade","club","diamond"]
+values = [2,3,4,5,6,7,8,9,10,"Jack","King","Queen","Ace"]
 
+def new_card(deck,hand):
+  hand.append(deck[0])
+  deck.remove(deck[0])
+
+def deal_starting_hand(deck, phand, dhand):
+  new_card(deck, phand)
+  #second card into player
+  new_card(deck,phand)
+  #1st card to dealer
+  new_card(deck,dhand)
+  #2nd card to dealer
+  new_card(deck,dhand)
+
+
+
+
+
+
+
+
+
+def number_to_card(number):
+  SuitIndex = number // 13
+  Suit = suits[SuitIndex]
+  ValueIndex = number % 13
+  Value = values[ValueIndex]
+
+  return "The " + str(Value) + " of " + Suit + "s"
+
+def card_to_value(card):
+  ValueList = []
+  ValueIndex = card % 13
+  Value = values[ValueIndex]
+  if Value == "Jack" or "King" or "Queen":
+    ValueList.append(10) 
+  elif Value == "Ace":
+    ValueList.append(1)
+    ValueList.append(11)
+  else:
+    ValueList.append(Value)
+          
+  return ValueList
+
+#hand = [42, 23, 2, 51]
+def get_hand_count(hand):
+  count = 0
+  for i in range(len(hand)):
+    card_value = card_to_value(hand[i])
+    for j in range(len(card_value)):
+      count = count + card_value[j]
+  return count
+    
+
+
+def generate_and_shuffle_deck():
+  deck = []
+  for i in range(52):
+    deck.append(i)
+
+  temp = 0
+  for i in range(51):
+    random_num = random.randint(i+1, 51)
+    temp = deck[i]
+    deck[i] = deck[random_num]
+    deck[random_num] = temp
+  
+  return deck
+
+
+
+deck = generate_and_shuffle_deck()
 print(deck)
-print(len(deck))
+deal_starting_hand(deck, player_hand,dealer_hand)
+print(deck)
+print(player_hand[0])
+print(dealer_hand[0])
+print(player_hand[1])
+print(dealer_hand[1])
+
+
+
+
+
