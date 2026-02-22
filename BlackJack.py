@@ -25,13 +25,6 @@ def deal_starting_hand(deck, phand, dhand):
   new_card(deck,dhand)
 
 
-
-
-
-
-
-
-
 def number_to_card(number):
   SuitIndex = number // 13
   Suit = suits[SuitIndex]
@@ -62,6 +55,21 @@ def get_hand_count(hand):
     for j in range(len(card_value)):
       count = count + card_value[j]
   return count
+
+def print_hands():
+  print("Player has", end=' ')
+  for i in range(len(player_hand)):
+    print((number_to_card(player_hand[i])) + ",", end=' ')
+  
+  print("")
+  for i in range(len(dealer_hand)):
+    print("Dealer has " +(number_to_card(dealer_hand[i])))
+    
+def is_hand_busted(hand):
+  hand_value = get_hand_count(hand)
+  if hand_value > 21:
+    return True
+  return False
     
 
 
@@ -79,18 +87,35 @@ def generate_and_shuffle_deck():
   
   return deck
 
-
+#print_current_hands():
+  #loop through the player's hand
+    #print each card
+  #loop through the dealer's hand
+    #print each card
 
 deck = generate_and_shuffle_deck()
-print(deck)
 deal_starting_hand(deck, player_hand,dealer_hand)
-print(deck)
-print(player_hand[0])
-print(dealer_hand[0])
-print(player_hand[1])
-print(dealer_hand[1])
+
+game_running =True
+while game_running:
+  print_hands()
+
+  print("Would you like to hit or stand?")
+  hit_stand = input()
+  print(hit_stand)
+  if hit_stand == "hit":
+    new_card(deck, player_hand)
+    if is_hand_busted(player_hand) == True:
+      game_running = False
+  if hit_stand == "q":
+    game_running = False
+  #deal the initial hands
+  #display the player's and dealer's hands
+  #while players turn:
+    #ask if player wants to hit or stand
+      #deal card or switch turn
+      #check if player won or busted
+  #repeat for dealer
 
 
-
-
-
+#len(list) gets the length of a list
