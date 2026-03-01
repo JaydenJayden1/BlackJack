@@ -37,7 +37,7 @@ def card_to_value(card):
   ValueList = []
   ValueIndex = card % 13
   Value = values[ValueIndex]
-  if Value == "Jack" or "King" or "Queen":
+  if Value == "Jack" or Value == "King" or Value == "Queen":
     ValueList.append(10) 
   elif Value == "Ace":
     ValueList.append(1)
@@ -49,11 +49,24 @@ def card_to_value(card):
 
 #hand = [42, 23, 2, 51]
 def get_hand_count(hand):
-  count = 0
+  possibleCounts= [0]
+  countsPlusTen = []
   for i in range(len(hand)):
-    card_value = card_to_value(hand[i])
-    for j in range(len(card_value)):
-      count = count + card_value[j]
+    card_value = card_to_value(hand[i]) # either [value] or [value, value]
+    if len(card_value) == 1:
+      for count in possibleCounts:
+        count = count + card_value[0]
+    #if we pulled 11
+    if len(card_value) == 2:
+      for count in possibleCounts:
+        count = count + card_value[0]
+        countsPlusTen.append(count + 10)
+      for count in countsPlusTen:
+        possibleCounts.append(count)
+
+
+
+
   return count
 
 def print_hands():
@@ -87,12 +100,6 @@ def generate_and_shuffle_deck():
   
   return deck
 
-#print_current_hands():
-  #loop through the player's hand
-    #print each card
-  #loop through the dealer's hand
-    #print each card
-
 deck = generate_and_shuffle_deck()
 deal_starting_hand(deck, player_hand,dealer_hand)
 
@@ -102,20 +109,11 @@ while game_running:
 
   print("Would you like to hit or stand?")
   hit_stand = input()
-  print(hit_stand)
+  #print(hit_stand)
   if hit_stand == "hit":
     new_card(deck, player_hand)
     if is_hand_busted(player_hand) == True:
+      print("busted")
       game_running = False
   if hit_stand == "q":
     game_running = False
-  #deal the initial hands
-  #display the player's and dealer's hands
-  #while players turn:
-    #ask if player wants to hit or stand
-      #deal card or switch turn
-      #check if player won or busted
-  #repeat for dealer
-
-
-#len(list) gets the length of a list
