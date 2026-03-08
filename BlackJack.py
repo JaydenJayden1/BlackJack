@@ -14,6 +14,7 @@ values = [2,3,4,5,6,7,8,9,10,"Jack","King","Queen","Ace"]
 def new_card(deck,hand):
   hand.append(deck[0])
   deck.remove(deck[0])
+  
 
 def deal_starting_hand(deck, phand, dhand):
   new_card(deck, phand)
@@ -54,20 +55,19 @@ def get_hand_count(hand):
   for i in range(len(hand)):
     card_value = card_to_value(hand[i]) # either [value] or [value, value]
     if len(card_value) == 1:
-      for count in possibleCounts:
-        count = count + card_value[0]
+      for i in range (len(possibleCounts)):
+        possibleCounts[i] += card_value[0]
     #if we pulled 11
     if len(card_value) == 2:
-      for count in possibleCounts:
-        count = count + card_value[0]
-        countsPlusTen.append(count + 10)
-      for count in countsPlusTen:
+      for i in range (len(possibleCounts)):
+        possibleCounts[i] += card_value[0]
+        countsPlusTen.append(possibleCounts[i] + 10)
+      for count in countsPlusTen:  
         possibleCounts.append(count)
+  return possibleCounts
 
 
 
-
-  return count
 
 def print_hands():
   print("Player has", end=' ')
@@ -80,8 +80,16 @@ def print_hands():
     
 def is_hand_busted(hand):
   hand_value = get_hand_count(hand)
-  if hand_value > 21:
-    return True
+  #make a count variable and set to 0
+  count = 0
+  numhands = len(hand_value)
+  for i in range(numhands):
+    if hand_value[i] > 21:
+      #add 1 to the count
+      count += 1
+  if count == len(hand_value):
+    return True 
+    print("hi")
   return False
     
 
@@ -104,16 +112,34 @@ deck = generate_and_shuffle_deck()
 deal_starting_hand(deck, player_hand,dealer_hand)
 
 game_running =True
+turn = "player"
 while game_running:
   print_hands()
 
   print("Would you like to hit or stand?")
   hit_stand = input()
   #print(hit_stand)
+  print(hit_stand)
   if hit_stand == "hit":
-    new_card(deck, player_hand)
-    if is_hand_busted(player_hand) == True:
-      print("busted")
-      game_running = False
+    if turn == "player":
+      new_card(deck, player_hand)
+      if is_hand_busted(player_hand) == True:
+        print_hands()
+        print("Player busted")
+        game_running = False
+
+    else:
+      new_card(deck, dealer_hand)
+      if is_hand_busted(dealer_hand) == True:
+        print_hands()
+        print("Dealer busted")
+        game_running = False
   if hit_stand == "q":
     game_running = False
+  # if the player types "s"
+  if hit_stand == "s":
+    #then set turn = "dealer"
+    turn = "dealer"
+    print("It is the "+ turn + "'s")
+    #print whos turn it is
+  
